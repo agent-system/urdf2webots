@@ -158,8 +158,9 @@ def URDFLink(proto, link, level, parentList, childList, linkList, jointList, sen
             if level == 1 and staticBase:
                 proto.write((level + 1) * indent + '%{ if fields.staticBase.value == false then }%\n')
             proto.write((level + 1) * indent + 'physics Physics {\n')
-            proto.write((level + 2) * indent + 'density -1\n')
-            proto.write((level + 2) * indent + 'mass %lf\n' % link.inertia.mass)
+            # proto.write((level + 2) * indent + 'density -1\n')
+            proto.write((level + 2) * indent + 'density 500\n')
+            # proto.write((level + 2) * indent + 'mass %lf\n' % link.inertia.mass)
             proto.write((level + 2) * indent + 'centerOfMass [ %lf %lf %lf ]\n' % (link.inertia.position[0],
                                                                                    link.inertia.position[1],
                                                                                    link.inertia.position[2]))
@@ -199,6 +200,14 @@ def URDFBoundingObject(proto, link, level, boxCollision):
     """Write an boundingObject."""
     indent = '  '
     boundingLevel = level
+    proto.write(level * indent + 'immersionProperties [ \n')
+    proto.write((level + 1) * indent + 'ImmersionProperties {\n')
+    proto.write((level + 1) * indent + 'fluidName "fluid"\n')
+    proto.write((level + 1) * indent + 'dragForceCoefficients 0.1 0 0\n')
+    proto.write((level + 1) * indent + 'dragTorqueCoefficients 0.001 0 0\n')
+    proto.write((level + 1) * indent + 'viscousResistanceTorqueCoefficient 0.005\n')
+    proto.write((level + 1) * indent + '}\n')
+    proto.write(level * indent + ']\n')    
     proto.write(level * indent + 'boundingObject ')
     hasGroup = len(link.collision) > 1
     if hasGroup:
