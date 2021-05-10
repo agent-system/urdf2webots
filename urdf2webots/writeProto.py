@@ -200,6 +200,7 @@ def URDFBoundingObject(proto, link, level, boxCollision):
     """Write an boundingObject."""
     indent = '  '
     boundingLevel = level
+    proto.write(level * indent + 'contactMaterial "body"\n')
     proto.write(level * indent + 'immersionProperties [ \n')
     proto.write((level + 1) * indent + 'ImmersionProperties {\n')
     proto.write((level + 1) * indent + 'fluidName "fluid"\n')
