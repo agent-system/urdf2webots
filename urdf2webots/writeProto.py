@@ -147,6 +147,15 @@ def URDFLink(proto, link, level, parentList, childList, linkList, jointList, sen
                 proto.write((level + 2) * indent + 'size 0.01 0.01 0.01\n')
                 proto.write((level + 1) * indent + '}\n')
         elif haveChild:
+            proto.write((level + 1) * indent + 'Group {\n')
+            proto.write((level + 1) * indent + 'children IS extensionSlot\n')
+            proto.write((level + 1) * indent + '}\n')            
+            proto.write((level + 1) * indent + ']\n')
+        else:
+            proto.write((level + 1) * indent + 'children [\n')
+            proto.write((level + 1) * indent + 'Group {\n')
+            proto.write((level + 1) * indent + 'children IS extensionSlot\n')
+            proto.write((level + 1) * indent + '}\n')
             proto.write((level + 1) * indent + ']\n')
         if level == 1:
             proto.write((level + 1) * indent + 'name IS name \n')
