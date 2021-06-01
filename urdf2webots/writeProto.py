@@ -169,7 +169,7 @@ def URDFLink(proto, link, level, parentList, childList, linkList, jointList, sen
                 proto.write((level + 1) * indent + '%{ if fields.staticBase.value == false then }%\n')
             proto.write((level + 1) * indent + 'physics Physics {\n')
             # proto.write((level + 2) * indent + 'density -1\n')
-            proto.write((level + 2) * indent + 'density 500\n')
+            proto.write((level + 2) * indent + 'density 700\n')
             # proto.write((level + 2) * indent + 'mass %lf\n' % link.inertia.mass)
             proto.write((level + 2) * indent + 'centerOfMass [ %lf %lf %lf ]\n' % (link.inertia.position[0],
                                                                                    link.inertia.position[1],

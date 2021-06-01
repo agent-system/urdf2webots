@@ -326,8 +326,12 @@ class Camera(SensorBase):
             file.write(indentationLevel * indent + '  height %d\n' % self.height)
         if self.noise:
             file.write(indentationLevel * indent + '  noise %lf\n' % self.noise)
+        file.write(indentationLevel * indent + '  recognition Recognition {\n')
+        file.write(indentationLevel * indent + '    frameColor 0.929412 0.831373 0\n')
+        file.write(indentationLevel * indent + '    frameThickness 3\n')
+        file.write(indentationLevel * indent + '    segmentation TRUE\n')
+        file.write(indentationLevel * indent + '  }\n')
         file.write(indentationLevel * indent + '}\n')
-
 
 class Lidar(SensorBase):
     """Define a lidar sensor."""
