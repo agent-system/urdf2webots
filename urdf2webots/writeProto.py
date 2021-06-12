@@ -2,6 +2,7 @@
 
 import math
 import numpy as np
+import parserURDF
 
 from urdf2webots.math_utils import rotateVector, matrixFromRotation, multiplyMatrix, rotationFromMatrix
 
@@ -69,6 +70,7 @@ def declaration(proto, robotName, initRotation):
     proto.write('  field  SFBool      supervisor      FALSE ' + spaces + '# Is `Robot.supervisor`.\n')
     proto.write('  field  SFBool      synchronization TRUE  ' + spaces + '# Is `Robot.synchronization`.\n')
     proto.write('  field  SFBool      selfCollision   FALSE ' + spaces + '# Is `Robot.selfCollision`.\n')
+    proto.write('  field  MFNode      immersionProperties   [] ' + spaces + '# Is `Robot.immersionProperties`.\n')
     proto.write('  field  MFNode      extensionSlot   []    ' + spaces + '# Is `Robot.extensionSlot`.\n')
     if staticBase:
         proto.write('  field  SFBool      staticBase      TRUE  ' + spaces + '# Defines if the robot base should ' +
@@ -121,7 +123,9 @@ def URDFLink(proto, link, level, parentList, childList, linkList, jointList, sen
             if sensor.parentLink == link.name:
                 if not haveChild:
                     haveChild = True
-                    proto.write((level + 1) * indent + 'children [\n')
+	        if isinstance(sensor,parserURDF.IMU):
+                    proto.write((level + 1) * indent + 'physics Physics { density 10 }\n')
+		proto.write((level + 1) * indent + 'children [\n')
                 sensor.export(proto, level + 2)
         # 3: export Joints
         for joint in jointList:
@@ -211,14 +215,15 @@ def URDFBoundingObject(proto, link, level, boxCollision):
     indent = '  '
     boundingLevel = level
     proto.write(level * indent + 'contactMaterial "body"\n')
-    proto.write(level * indent + 'immersionProperties [ \n')
-    proto.write((level + 1) * indent + 'ImmersionProperties {\n')
-    proto.write((level + 1) * indent + 'fluidName "fluid"\n')
-    proto.write((level + 1) * indent + 'dragForceCoefficients 0.1 0 0\n')
-    proto.write((level + 1) * indent + 'dragTorqueCoefficients 0.001 0 0\n')
-    proto.write((level + 1) * indent + 'viscousResistanceTorqueCoefficient 0.005\n')
-    proto.write((level + 1) * indent + '}\n')
-    proto.write(level * indent + ']\n')    
+    proto.write(level * indent + 'immersionProperties IS immersionProperties\n')
+    # proto.write(level * indent + 'immersionProperties [ \n')
+    # proto.write((level + 1) * indent + 'ImmersionProperties {\n')
+    # proto.write((level + 1) * indent + 'fluidName "fluid"\n')
+    # proto.write((level + 1) * indent + 'dragForceCoefficients 0.1 0 0\n')
+    # proto.write((level + 1) * indent + 'dragTorqueCoefficients 0.001 0 0\n')
+    # proto.write((level + 1) * indent + 'viscousResistanceTorqueCoefficient 0.005\n')
+    # proto.write((level + 1) * indent + '}\n')
+    # proto.write(level * indent + ']\n')    
     proto.write(level * indent + 'boundingObject ')
     hasGroup = len(link.collision) > 1
     if hasGroup:
