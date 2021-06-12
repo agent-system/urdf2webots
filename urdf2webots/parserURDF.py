@@ -278,6 +278,7 @@ class IMU(SensorBase):
             file.write(indentationLevel * indent + '  lookupTable [-100 -100 %lf, 100 100 %lf]\n' %
                        (-self.gaussianNoise / 100.0, self.gaussianNoise / 100.0))
         file.write(indentationLevel * indent + '}\n')
+
         file.write(indentationLevel * indent + 'Gyro {\n')
         file.write(indentationLevel * indent + '  name "%s gyro"\n' % self.name)
         self.export_pose(file, indentationLevel)
@@ -285,6 +286,12 @@ class IMU(SensorBase):
             file.write(indentationLevel * indent + '  lookupTable [-100 -100 %lf, 100 100 %lf]\n' %
                        (-self.gaussianNoise / 100.0, self.gaussianNoise / 100.0))
         file.write(indentationLevel * indent + '}\n')
+
+        file.write(indentationLevel * indent + 'InertialUnit {\n')
+        file.write(indentationLevel * indent + '  name "%s inertialunit"\n' % self.name)
+        self.export_pose(file, indentationLevel)
+        file.write(indentationLevel * indent + '}\n')
+
         file.write(indentationLevel * indent + 'Compass {\n')
         file.write(indentationLevel * indent + '  name "%s compass"\n' % self.name)
         self.export_pose(file, indentationLevel)
