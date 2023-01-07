@@ -2,7 +2,7 @@
 
 import math
 import numpy as np
-import parserURDF
+import urdf2webots.parserURDF
 
 from urdf2webots.math_utils import rotateVector, matrixFromRotation, multiplyMatrix, rotationFromMatrix
 
@@ -123,9 +123,9 @@ def URDFLink(proto, link, level, parentList, childList, linkList, jointList, sen
             if sensor.parentLink == link.name:
                 if not haveChild:
                     haveChild = True
-	        if isinstance(sensor,parserURDF.IMU):
-                    proto.write((level + 1) * indent + 'physics Physics { density 10 }\n')
-		proto.write((level + 1) * indent + 'children [\n')
+                    if isinstance(sensor,parserURDF.IMU):
+                        proto.write((level + 1) * indent + 'physics Physics { density 10 }\n')
+                proto.write((level + 1) * indent + 'children [\n')
                 sensor.export(proto, level + 2)
         # 3: export Joints
         for joint in jointList:
